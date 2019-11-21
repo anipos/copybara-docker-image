@@ -1,0 +1,32 @@
+name: Build copybara docker image
+
+on:
+  push:
+  schedule:
+    - cron: "0 1 * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout google/copybara master
+        uses: actions/checkout@v1
+        with:
+          repository: google/copybara
+          ref: master
+      - name: Login to github docker registry
+        run: docker login docker.pkg.github.com -u whatever -p ${{ secrets.GITHUB_TOKEN }}
+      - name: Build copybara docker image
+        run: |
+          cd $GITHUB_WORKSPACE/../copybara
+          docker build -t copybara .
+      - name: Tag copybara docker images
+        run: |
+          cd $GITHUB_WORKSPACE/../copybara
+          docker tag copybara docker.pkg.github.com/$GITHUB_REPOSITORY/copybara:latest
+          docker tag copybara docker.pkg.github.com/$GITHUB_REPOSITORY/copybara:$(git rev-parse HEAD)
+      - name: Push copybara docker images
+        run: |
+          cd $GITHUB_WORKSPACE/../copybara
+          docker push docker.pkg.github.com/$GITHUB_REPOSITORY/copybara:latest
+          docker push docker.pkg.github.com/$GITHUB_REPOSITORY/copybara:$(git rev-parse HEAD)
