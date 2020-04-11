@@ -1,4 +1,4 @@
-name: Build copybara docker image
+name: Build and push copybara docker image
 
 on:
   push:
@@ -15,7 +15,10 @@ jobs:
           repository: google/copybara
           ref: master
       - name: Login to github docker registry
-        run: docker login docker.pkg.github.com -u whatever -p ${{ secrets.GITHUB_TOKEN }}
+        run: docker login -u $USER -p $TOKEN
+        env:
+          USER: ${{ secrets.DOCKER_HUB_USERNAME }}
+          TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
       - name: Build copybara docker image
         run: |
           cd $GITHUB_WORKSPACE/../copybara
@@ -23,10 +26,10 @@ jobs:
       - name: Tag copybara docker images
         run: |
           cd $GITHUB_WORKSPACE/../copybara
-          docker tag copybara docker.pkg.github.com/$GITHUB_REPOSITORY/copybara:latest
-          docker tag copybara docker.pkg.github.com/$GITHUB_REPOSITORY/copybara:$(git rev-parse HEAD)
+          docker tag copybara anipos/copybara:latest
+          docker tag copybara anipos/copybara:$(git rev-parse HEAD)
       - name: Push copybara docker images
         run: |
           cd $GITHUB_WORKSPACE/../copybara
-          docker push docker.pkg.github.com/$GITHUB_REPOSITORY/copybara:latest
-          docker push docker.pkg.github.com/$GITHUB_REPOSITORY/copybara:$(git rev-parse HEAD)
+          docker push anipos/copybara:latest
+          docker push anipos/copybara:$(git rev-parse HEAD)
