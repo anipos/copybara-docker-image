@@ -21,15 +21,12 @@ jobs:
           TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
       - name: Build copybara docker image
         run: |
-          cd $GITHUB_WORKSPACE/../copybara
           docker build -t copybara .
       - name: Tag copybara docker images
         run: |
-          cd $GITHUB_WORKSPACE/../copybara
           docker tag copybara anipos/copybara:latest
           docker tag copybara anipos/copybara:$(git rev-parse HEAD)
       - name: Push copybara docker images
         run: |
-          cd $GITHUB_WORKSPACE/../copybara
           docker push anipos/copybara:latest
           docker push anipos/copybara:$(git rev-parse HEAD)
