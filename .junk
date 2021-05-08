@@ -1,0 +1,4 @@
+> Scheduled workflows will be disabled by default in forks of public repos and
+> in public repos with no activity for 60 consecutive days.
+
+Workaround the above issue by editing this file.
