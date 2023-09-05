@@ -5,4 +5,4 @@ actions. It should be a temporal workaround for the official image being not
 available (see https://github.com/google/copybara/issues/82).
 
 The built image is available at
-https://hub.docker.com/r/anipos/copybara.
+https://github.com/anipos/copybara-docker-image/pkgs/container/copybara-docker-image.
