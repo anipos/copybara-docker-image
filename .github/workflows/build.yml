@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout google/copybara master
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: google/copybara
           ref: master
