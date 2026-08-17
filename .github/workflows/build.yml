@@ -16,6 +16,10 @@ jobs:
           ref: master
       - id: git
         run: echo sha=$(git rev-parse HEAD) >> $GITHUB_OUTPUT
+      # Workaround: upstream introduced a Java 22+ unnamed variable but its
+      # Dockerfile builds with --java_language_version=21. Remove once fixed.
+      # https://github.com/google/copybara/commit/d7a81bd577b5d30f20cce389d98ef84de955ef3f
+      - run: sed -i 's/var _ =/var unused =/' java/com/google/copybara/util/DiffUtil.java
       - id: meta
         uses: docker/metadata-action@v6
         with:
